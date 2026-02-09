@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir mlflow==3.9 boto3
 RUN mkdir -p /mlflow
 VOLUME /mlflow
 
-COPY entrypoint.sh /entrypoint.sh
+COPY docker/mlflow/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 5000
