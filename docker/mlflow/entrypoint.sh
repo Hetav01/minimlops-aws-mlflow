@@ -9,15 +9,16 @@ WORKERS="${MLFLOW_WORKERS:-2}"
 
 echo "──────────────────────────────────────"
 echo " MLflow Tracking Server"
-echo "  backend : ${BACKEND_STORE_URI}"
+echo "  backend  : ${BACKEND_STORE_URI}"
 echo "  artifacts: ${ARTIFACT_ROOT}"
 echo "  host:port: ${HOST}:${PORT}"
 echo "  workers  : ${WORKERS}"
 echo "──────────────────────────────────────"
 
 exec mlflow server \
-    --host "${HOST}" \
-    --port "${PORT}" \
-    --backend-store-uri "${BACKEND_STORE_URI}" \
-    --default-artifact-root "${ARTIFACT_ROOT}" \
-    --workers "${WORKERS}"
+  --host "${HOST}" \
+  --port "${PORT}" \
+  --backend-store-uri "${BACKEND_STORE_URI}" \
+  --default-artifact-root "${ARTIFACT_ROOT}" \
+  --workers "${WORKERS}" \
+  --serve-artifacts
