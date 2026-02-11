@@ -1,7 +1,7 @@
 import os
 import time
 import mlflow
-import mlflow.sklearn
+from mlflow import sklearn as mlflow_sklearn
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -99,7 +99,7 @@ with mlflow.start_run(run_name=f"adult-income-rf-{int(time.time())}"):
     mlflow.log_metric("f1_score", f1)
     mlflow.log_metric("precision", precision)
     mlflow.log_metric("recall", recall)
-    mlflow.log_metric("roc_auc", roc_auc)
+    mlflow.log_metric("roc_auc", float(roc_auc))
     
     # Log confusion matrix values
     cm = confusion_matrix(y_test, y_pred)
@@ -110,7 +110,7 @@ with mlflow.start_run(run_name=f"adult-income-rf-{int(time.time())}"):
     mlflow.log_metric("true_positives", int(tp))
     
     # Log model
-    mlflow.sklearn.log_model(clf, "model")
+    mlflow_sklearn.log_model(clf, "model")
     
     # Log feature importances as artifact
     feature_importance = "\n".join(
