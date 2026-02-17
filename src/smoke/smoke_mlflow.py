@@ -2,6 +2,7 @@ import os
 import time
 import mlflow
 from mlflow import sklearn as mlflow_sklearn
+from dotenv import find_dotenv, load_dotenv
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -17,7 +18,17 @@ from sklearn.metrics import (
     confusion_matrix,
 )
 
-TRACKING_URI = os.environ["MLFLOW_TRACKING_URI"]  # e.g. http://<ALB-DNS>
+# Load .env so MLFLOW_TRACKING_URI can be set there (e.g. http://localhost:5000 or ALB URL)
+if find_dotenv(usecwd=True):
+    load_dotenv(override=False)
+
+TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
+if not TRACKING_URI or not TRACKING_URI.strip():
+    raise SystemExit(
+        "MLFLOW_TRACKING_URI is required. Set it in .env or export it.\n"
+        "Examples: http://localhost:5000  or  http://<your-alb-dns>"
+    )
+TRACKING_URI = TRACKING_URI.strip()
 EXPERIMENT = "minimlops-smoke"
 
 mlflow.set_tracking_uri(TRACKING_URI)
