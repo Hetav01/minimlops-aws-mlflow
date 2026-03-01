@@ -1,4 +1,4 @@
-.PHONY: help venv install smoke-sts smoke-s3 bootstrap-s3
+.PHONY: help venv install smoke-sts smoke-s3 bootstrap-s3 mlflow-local smoke-same-model smoke-multi-model
 
 VENV_PY := .venv/bin/python3
 PIP := .venv/bin/pip3
@@ -11,6 +11,9 @@ help:
 	@echo "  make smoke-sts     Validate AWS identity (STS)"
 	@echo "  make smoke-s3      Validate S3 bucket + prefix listing"
 	@echo "  make bootstrap-s3  Create S3 'folder marker' prefixes"
+	@echo "  make mlflow-local  Run MLflow Tracking Server smoke test"
+	@echo "  make smoke-same-model  Same model type, different scaling (multiple experiments)"
+	@echo "  make smoke-multi-model  Four different models in one experiment"
 
 $(VENV_PY):
 	python3 -m venv .venv
@@ -32,3 +35,12 @@ smoke-s3: install
 
 bootstrap-s3: install
 	$(VENV_PY) -m src.smoke.bootstrap_s3_prefixes
+
+mlflow-local: install
+	$(VENV_PY) -m src.smoke.smoke_mlflow
+
+smoke-same-model: install
+	$(VENV_PY) -m src.smoke.smoke_same_model
+
+smoke-multi-model: install
+	$(VENV_PY) -m src.smoke.smoke_multi_model
